@@ -17,40 +17,35 @@ import java.util.List;
  * @author Admin
  */
 public class SachDAO extends QLNSDAO<Sach, String>{
- final String INSERT_SQL = "INSERT INTO Sach(MaSach,TenSach,NamXuatBan,GiaBan,SoLuong,TrangThai,MaDauSach,GhiChu) values(?,?,?,?,?,?,?.?)";
-    final String UPDATE_SQL = "UPDATE Sach set TenSach=?,NamXuatBan=?,GiaBan=?,SoLuong=?,TrangThai=?,MaDauSach=?,GhiChu=? where MaSach=?";
-    final String DELETE_SQL = "DELETE FROM Sach WHERE MaSach=?";
-    final String SELECT_ALL_SQL = "SELECT * FROM Sach";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM Sach WHERE MaSach= ?";
+ String insertSql = "INSERT SACH(MaSach,TenSach,GiaBan,SoLuong,MaDauSach,GhiChu,TrangThai) VALUES(?,?,?,?,?,?,?)";
+    String selectAll = "SELECT*FROM SACH";
+    String selectById = "SELECT*FROM SACH WHERE MaSach=?";
+    String updateSql="UPDATE SACH SET TenSach=?,GiaBan=?,SoLuong=?,MaDauSach=?,GhiChu=?,TrangThai=? where MaSach=?";
+    String deleteSql="DELETE FROM SACH WHERE MaSach=?";
 
     @Override
     public void insert(Sach entity) {
-        JDBCHelper.update(INSERT_SQL, entity.getMaSach(),entity.getTenSach(), entity.getNamXuatBan(),
-                entity.getGiaBan(),entity.getSoLuong(),entity.isTrangThai(),entity.getMaDauSach(),entity.getGhiChu()
-        
-        );
+        JDBCHelper.update(insertSql, entity.getMaSach(),entity.getTenSach(),entity.getGiaBan(),entity.getSoLuong(),entity.getMaDauSach(),entity.getGhiChu(),entity.isTrangThai());
     }
 
     @Override
     public void update(Sach entity) {
-JDBCHelper.update(UPDATE_SQL, entity.getTenSach(), entity.getNamXuatBan(),
-                entity.getGiaBan(),entity.getSoLuong(),entity.isTrangThai(),entity.getMaDauSach(),entity.getGhiChu(),entity.getMaSach()
-);
+JDBCHelper.update(updateSql, entity.getMaSach(),entity.getTenSach(),entity.getGiaBan(),entity.getSoLuong(),entity.getMaDauSach(),entity.getGhiChu(),entity.isTrangThai());
         }
 
     @Override
     public void delete(String id) {
-        JDBCHelper.update(DELETE_SQL, id);
+        JDBCHelper.update(deleteSql, id);
     }
 
     @Override
     public List<Sach> selectAll() {
-        return selectBySql(SELECT_ALL_SQL);
+        return selectBySql(selectAll);
     }
 
     @Override
     public Sach selectById(String id) {
-        List<Sach> list= selectBySql(SELECT_BY_ID_SQL, id);
+        List<Sach> list= selectBySql(selectById, id);
         if (list.isEmpty()) {
             return null;
         }
@@ -67,8 +62,8 @@ JDBCHelper.update(UPDATE_SQL, entity.getTenSach(), entity.getNamXuatBan(),
                 Sach entity = new Sach();
                 entity.setMaSach(rs.getString("MaSach"));
                 entity.setTenSach(rs.getString("TenSach"));
-                entity.setNamXuatBan(rs.getDate("NamXuatBan"));
-                entity.setGiaBan(rs.getDouble("GiaBan"));
+                
+                entity.setGiaBan(rs.getFloat("GiaBan"));
                 entity.setSoLuong(rs.getInt("SoLuong"));
                 entity.setTrangThai(rs.getBoolean("TrangThai"));
                 entity.setMaDauSach(rs.getString("MaDauSach"));
